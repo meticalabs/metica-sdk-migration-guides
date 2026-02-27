@@ -1,6 +1,6 @@
 # AI Agent Instructions: Complete MaxSdk → MeticaSdk Migration
 
-You are a Unity C# migration assistant. Your task is to migrate a Unity project from **AppLovin MaxSdk 8.6.0** to **MeticaSdk 2.2.1**. MeticaSdk wraps AppLovin MAX internally — the MAX Unity Plugin stays installed, but all direct `MaxSdk.*` code must be replaced with `MeticaSdk.*` equivalents.
+You are a Unity C# migration assistant. Your task is to migrate a Unity project from **AppLovin MaxSdk 8.6.0** to **MeticaSdk 2.2.2**. MeticaSdk wraps AppLovin MAX internally — the MAX Unity Plugin stays installed, but all direct `MaxSdk.*` code must be replaced with `MeticaSdk.*` equivalents.
 
 Follow every step below in order. Do not skip steps. After each step, confirm what you changed.
 
@@ -165,7 +165,7 @@ private void OnInitialized(MeticaInitResponse initResponse)
 - `MeticaMediationInfo` takes the MAX SDK Key (replaces `MaxSdk.SetSdkKey()`)
 - `MeticaInitResponse` contains `SmartFloors` (user group assignment: TRIAL/HOLDOUT) — new MeticaSdk feature
 - `SetVerboseLogging(bool)` → `SetLogEnabled(bool)`
-- No `MaxSdk.IsInitialized()` equivalent — use the init callback/await to know when ready
+- `MaxSdk.IsInitialized()` → `MeticaSdk.Ads.Max.IsSuccessfullyInitialized()` (available after init completes)
 
 ---
 
@@ -245,8 +245,12 @@ private void OnInitialized(MeticaInitResponse initResponse)
 | `MaxSdk.IsUserConsentSet()` | `MeticaSdk.Ads.Max.IsUserConsentSet()` |
 | `MaxSdk.SetDoNotSell(bool)` | `MeticaSdk.Ads.SetDoNotSell(bool)` |
 | `MaxSdk.SetVerboseLogging(bool)` | `MeticaSdk.SetLogEnabled(bool)` |
+| `MaxSdk.IsVerboseLoggingEnabled()` | _(no getter — `SetLogEnabled` only)_ |
+| `MaxSdk.SetMuted(bool)` | `MeticaSdk.Ads.Max.SetMuted(bool)` |
+| `MaxSdk.IsMuted()` | `MeticaSdk.Ads.Max.IsMuted()` |
 | `MaxSdk.SetExtraParameter(key, value)` | `MeticaSdk.Ads.Max.SetExtraParameter(key, value)` |
 | `MaxSdk.ShowMediationDebugger()` | `MeticaSdk.Ads.Max.ShowMediationDebugger()` |
+| `MaxSdk.IsInitialized()` | `MeticaSdk.Ads.Max.IsSuccessfullyInitialized()` |
 | `MaxSdk.Version` | `MeticaSdk.Version` |
 
 ---
@@ -423,14 +427,25 @@ Search for: AdViewConfiguration with x/y coordinates, IsAdaptive
 ```
 **Action:** MeticaSdk `MeticaAdViewConfiguration` only supports predefined positions (TopCenter, BottomCenter, Centered), not x/y coordinates or adaptive banners. Add TODO if used.
 
-### CMP Service — NOT SUPPORTED
+### CMP Service — PARTIALLY SUPPORTED
 ```
 Search for: MaxSdk.CmpService, ShowCmpForExistingUser, HasSupportedCmp
 ```
-**Action:** Add TODO comment:
+**Action:** `ShowCmpForExistingUser` is available via `MeticaSdk.Ads.Max.ShowCmpForExistingUser()`, but the MeticaSdk version has no completion/error callback. `HasSupportedCmp` has no equivalent. Replace what you can, then add a TODO for the missing callback:
 ```csharp
-// TODO: [MIGRATION] CMP Service (MaxCmpService) is not available in MeticaSdk.
-// You must implement consent management separately.
+// BEFORE
+MaxSdk.CmpService.ShowCmpForExistingUser(error => { /* handle error */ });
+
+// AFTER
+MeticaSdk.Ads.Max.ShowCmpForExistingUser();
+// TODO: [MIGRATION] MeticaSdk.Ads.Max.ShowCmpForExistingUser() has no completion or
+// error callback. Any post-CMP logic that was in the MaxCmpError handler must be
+// moved to a separate trigger (e.g., user action, timer, or next-session logic).
+
+// BEFORE
+bool hasCmp = MaxSdk.CmpService.HasSupportedCmp;
+// TODO: [MIGRATION] HasSupportedCmp has no MeticaSdk equivalent. Remove this check
+// or handle CMP presence detection via a third-party CMP SDK.
 ```
 
 ### Privacy Getters — PARTIALLY SUPPORTED
@@ -456,11 +471,15 @@ Search for: MaxSdk.ShowCreativeDebugger, MaxSdk.SetCreativeDebuggerEnabled,
 ```
 **Action:** Remove these calls. They have no MeticaSdk equivalent.
 
-### Mute/Audio — NOT SUPPORTED
+### Mute/Audio — SUPPORTED (moved to `Ads.Max`)
 ```
 Search for: MaxSdk.SetMuted, MaxSdk.IsMuted
 ```
-**Action:** Remove these calls. No MeticaSdk equivalent.
+**Action:** Replace with the equivalent calls under `MeticaSdk.Ads.Max`:
+```csharp
+MaxSdk.SetMuted(true)       →  MeticaSdk.Ads.Max.SetMuted(true)
+MaxSdk.IsMuted()            →  MeticaSdk.Ads.Max.IsMuted()
+```
 
 ### Safe Area / Misc — NOT SUPPORTED
 ```
