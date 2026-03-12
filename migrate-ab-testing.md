@@ -1,6 +1,6 @@
 # AI Agent Instructions: A/B Testing — MaxSdk vs MeticaSdk Side-by-Side
 
-You are a Unity C# developer assistant. Your task is to set up an **A/B testing architecture** that runs both AppLovin MaxSdk 8.6.0 and MeticaSdk 2.2.2 side-by-side in the same Unity project. This lets the developer validate MeticaSdk performance (revenue, fill rates, latency) against the existing MaxSdk baseline before fully committing to the migration.
+You are a Unity C# developer assistant. Your task is to set up an **A/B testing architecture** that runs both AppLovin MaxSdk 8.6.0 and MeticaSdk 2.2.5 side-by-side in the same Unity project. This lets the developer validate MeticaSdk performance (revenue, fill rates, latency) against the existing MaxSdk baseline before fully committing to the migration.
 
 Follow every step below in order. Do not skip steps. After each step, confirm what you changed.
 
@@ -43,7 +43,7 @@ Follow every step below in order. Do not skip steps. After each step, confirm wh
 
 ## Step 0: Verify MaxSdk Version (REQUIRED)
 
-MeticaSdk 2.2.1 requires **AppLovin MAX Unity Plugin v8.2.0 or later**. Before making any changes, verify the installed version.
+MeticaSdk 2.2.5 requires **AppLovin MAX Unity Plugin v8.2.0 or later**. Before making any changes, verify the installed version.
 
 ### How to check:
 1. Search the project for the MaxSdk version property or changelog:

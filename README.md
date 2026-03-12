@@ -1,6 +1,6 @@
 # MaxSdk → MeticaSdk Migration Guide for AI Agents
 
-Use these instruction files to have an AI coding agent migrate your Unity project from **AppLovin MaxSdk 8.6.0** to **MeticaSdk 2.2.2**.
+Use these instruction files to have an AI coding agent migrate your Unity project from **AppLovin MaxSdk 8.6.0** to **MeticaSdk 2.2.5**.
 
 ## Choose Your Scenario
 
@@ -47,7 +47,7 @@ Copy-paste the contents of the migration file into the chat, then ask the AI to 
 Before starting any migration scenario, ensure:
 
 1. **AppLovin MAX Unity Plugin v8.2.0 or later** — MeticaSdk requires this minimum version. Verify by checking `MaxSdk.Version` in code or the plugin's `CHANGELOG.md` / `package.json` in your project. If below 8.2.0, update the MAX plugin first.
-2. **MeticaSdk 2.2.2** `.unitypackage` imported into the project
+2. **MeticaSdk 2.2.5** `.unitypackage` imported into the project
 3. **Credentials ready:**
    - Metica API Key (from Metica platform)
    - Metica App ID (from Metica platform)
@@ -56,5 +56,5 @@ Before starting any migration scenario, ensure:
 
 ## Reference
 
-- [API Comparison Document](../MaxSdk-8.6.0-vs-MeticaSdk-2.2.2-API-Comparison.md) — full side-by-side API comparison
+- [API Comparison Document](./comparisons/MaxSdk-8.6.0-vs-MeticaSdk-2.2.5-API-Comparison.md) — full side-by-side API comparison
 - [MeticaSdk Official Docs](https://docs.metica.com/api/unity-sdk/unity-sdk-2) — official integration guide

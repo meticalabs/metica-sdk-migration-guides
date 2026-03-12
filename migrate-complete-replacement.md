@@ -1,6 +1,6 @@
 # AI Agent Instructions: Complete MaxSdk → MeticaSdk Migration
 
-You are a Unity C# migration assistant. Your task is to migrate a Unity project from **AppLovin MaxSdk 8.6.0** to **MeticaSdk 2.2.2**. MeticaSdk wraps AppLovin MAX internally — the MAX Unity Plugin stays installed, but all direct `MaxSdk.*` code must be replaced with `MeticaSdk.*` equivalents.
+You are a Unity C# migration assistant. Your task is to migrate a Unity project from **AppLovin MaxSdk 8.6.0** to **MeticaSdk 2.2.5**. MeticaSdk wraps AppLovin MAX internally — the MAX Unity Plugin stays installed, but all direct `MaxSdk.*` code must be replaced with `MeticaSdk.*` equivalents.
 
 Follow every step below in order. Do not skip steps. After each step, confirm what you changed.
 
@@ -21,7 +21,7 @@ Follow every step below in order. Do not skip steps. After each step, confirm wh
 
 ## Step 0: Verify MaxSdk Version (REQUIRED)
 
-MeticaSdk 2.2.1 requires **AppLovin MAX Unity Plugin v8.2.0 or later**. Before making any changes, verify the installed version.
+MeticaSdk 2.2.5 requires **AppLovin MAX Unity Plugin v8.2.0 or later**. Before making any changes, verify the installed version.
 
 ### How to check:
 1. Search the project for the MaxSdk version property or changelog:
@@ -398,7 +398,7 @@ Search for: MaxSdk.LoadAppOpenAd, MaxSdk.IsAppOpenAdReady, MaxSdk.ShowAppOpenAd,
 ```
 **Action:** Comment out the entire App Open Ad implementation and add:
 ```csharp
-// TODO: [MIGRATION] App Open Ads are not supported in MeticaSdk 2.2.1.
+// TODO: [MIGRATION] App Open Ads are not supported in MeticaSdk 2.2.5.
 // Options: Remove this ad format, or keep MaxSdk App Open alongside MeticaSdk for other formats.
 ```
 
